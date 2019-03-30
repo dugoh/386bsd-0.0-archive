@@ -1,0 +1,27 @@
+index() {
+  echo "<HTML><HEAD><TITLE>LINKS</TITLE></HEAD><BODY><ul>" >index.html
+  for file in $(ls|grep -v index.html); do \
+    (\
+      printf '<li><a href="' ; \
+      printf "${file}" ; \
+      printf '">' ; \
+      printf "${file}" ; \
+      printf '</a></li>\n' \
+    ) >>index.html ; \
+  done
+  echo "</ul></BODY></HTML>" >>index.html
+}
+
+push() {
+  git init
+  git config user.name "${USER}"
+  git config user.email "${GHP_MAIL}"
+  git add .
+  git commit -m "Deploy to GitHub Pages"
+  git push --force --quiet https://${GHP_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git master:gh-pages
+}
+mkdir gh-pages
+cd gh-pages
+mv ../*.tar.* ./
+index
+push
