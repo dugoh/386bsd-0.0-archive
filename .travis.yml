@@ -1,0 +1,6 @@
+dist: trusty
+language: bash
+
+script:
+  - chmod +x ./script
+  - ./script
